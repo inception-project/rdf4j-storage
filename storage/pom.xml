@@ -9,18 +9,6 @@
 	<artifactId>rdf4j-storage</artifactId>
 	<name>RDF4J: Storage</name>
 	<description>RDF4J storaging, indexing and inferencing libraries</description>
-  <repositories>
-    <repository>
-      <id>sonatype-snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 	<dependencies>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
