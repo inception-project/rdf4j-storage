@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.eclipse.rdf4j</groupId>
+		<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
 		<artifactId>rdf4j-storage-parent</artifactId>
 		<version>2.4-SNAPSHOT</version>
 	</parent>
@@ -17,22 +17,22 @@ The SPIN SAIL adds constraint checking and inferencing using SPIN to a base SAIL
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
+			<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
 			<artifactId>rdf4j-spin</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
+			<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
 			<artifactId>rdf4j-repository-sail</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
+			<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
 			<artifactId>rdf4j-sail-inferencer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
+			<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
 			<artifactId>rdf4j-sail-base</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -42,8 +42,13 @@ The SPIN SAIL adds constraint checking and inferencing using SPIN to a base SAIL
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
+			<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
 			<artifactId>rdf4j-sail-memory</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
