@@ -63,7 +63,8 @@
   </licenses>
 
   <modules>
-    <module>elasticsearch</module>
+    <!-- Cannot be used with Lucene 7.3.x due to strict version dependency on 7.2.1 -->
+    <!--<module>elasticsearch</module>-->
     <module>evaluation</module>
     <module>federation</module>
     <module>geosparql</module>
@@ -79,7 +80,8 @@
     <module>sail-base</module>
     <module>sail-model</module>
     <module>sail-spin</module>
-    <module>solr</module>
+   <!-- Cannot be used with Lucene 7.3.x due to version dependency -->
+    <!--<module>solr</module>-->
     <module>spin</module>
     <module>storage</module>
     <module>shacl</module>
@@ -825,7 +827,7 @@
                     <maxJdkVersion>1.8</maxJdkVersion>
                     <excludes>
                       <exclude>org.apache.logging.log4j:log4j-api</exclude>
-                      <exclude>org.elasticsearch:elasticsearch</exclude>
+                      <!--<exclude>org.elasticsearch:elasticsearch</exclude>-->
                     </excludes>
                   </enforceBytecodeVersion>
                 </rules>

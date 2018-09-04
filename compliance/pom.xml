@@ -14,8 +14,10 @@
 	<modules>
 		<module>model</module>
                 <module>lucene</module>
-		<module>elasticsearch</module>
-		<module>solr</module>
+  <!-- Cannot be used with Lucene 7.3.x due to strict version dependency on 7.2.1 -->
+		<!--<module>elasticsearch</module>-->
+  <!-- Cannot be used with Lucene 7.3.x due to version dependency -->
+  <!--<module>solr</module>-->
 		<module>store</module>
 		<module>serql</module>
 		<module>geosparql</module>
