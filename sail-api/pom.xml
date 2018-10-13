@@ -17,22 +17,22 @@
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-query</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-queryalgebra-model</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-model</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-util</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 
 		<dependency>

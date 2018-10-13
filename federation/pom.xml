@@ -19,7 +19,7 @@ The Federation SAIL allows multiple datasets to be virtually combined into a sin
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-rio-turtle</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
@@ -34,12 +34,12 @@ The Federation SAIL allows multiple datasets to be virtually combined into a sin
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-model</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-repository-manager</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
@@ -55,7 +55,7 @@ The Federation SAIL allows multiple datasets to be virtually combined into a sin
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-queryparser-sparql</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 			<scope>test</scope>
 		</dependency>
 

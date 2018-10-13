@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-repository-api</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -27,37 +27,37 @@
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-http-client</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-queryparser-api</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-queryalgebra-model</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-query</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-rio-api</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-rio-trig</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-model</artifactId>
-			<version>${project.version}</version>
+      <version>${rdf4j-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
