@@ -4,7 +4,7 @@
 
   <groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
   <artifactId>rdf4j-storage-parent</artifactId>
-  <version>2.4.0</version>
+  <version>2.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
 	<name>RDF4J Storage</name>
@@ -859,7 +859,7 @@
 		<connection>scm:git:git://github.com:inception-project/rdf4j-storage.git</connection>
 		<developerConnection>scm:git:git@github.com:inception-project/rdf4j-storage.git</developerConnection>
 		<url>https://github.com/inception-project/rdf4j-storage.git</url>
-	  <tag>inception-rdf4j-storage-2.4.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 </project>
