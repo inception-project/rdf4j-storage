@@ -1,12 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
   <groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
   <artifactId>rdf4j-storage-parent</artifactId>
-  <version>2.4-SNAPSHOT</version>
+  <version>2.4.0</version>
   <packaging>pom</packaging>
 
 	<name>RDF4J Storage</name>
@@ -861,6 +859,7 @@
 		<connection>scm:git:git://github.com:inception-project/rdf4j-storage.git</connection>
 		<developerConnection>scm:git:git@github.com:inception-project/rdf4j-storage.git</developerConnection>
 		<url>https://github.com/inception-project/rdf4j-storage.git</url>
-	</scm>
+	  <tag>inception-rdf4j-storage-2.4.0</tag>
+  </scm>
 
 </project>
