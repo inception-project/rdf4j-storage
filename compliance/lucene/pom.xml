@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
+		<groupId>org.eclipse.rdf4j</groupId>
 		<artifactId>rdf4j-storage-compliance</artifactId>
-		<version>2.4-SNAPSHOT</version>
+		<version>2.4.4-inception-1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>rdf4j-lucene-compliance</artifactId>
@@ -33,9 +33,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
+      <groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-lucene-testsuite</artifactId>
-      <version>${rdf4j-core.version}</version>
+      <version>${rdf4j-testsuite.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
