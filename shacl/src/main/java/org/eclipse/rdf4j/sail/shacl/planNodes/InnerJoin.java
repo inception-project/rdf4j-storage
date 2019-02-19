@@ -7,8 +7,17 @@
  *******************************************************************************/
 package org.eclipse.rdf4j.sail.shacl.planNodes;
 
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.rdf4j.common.iteration.CloseableIteration;
 import org.eclipse.rdf4j.sail.SailException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * @author Håvard Ottestad
@@ -17,39 +26,40 @@ import org.eclipse.rdf4j.sail.SailException;
  * The right iterator is allowed to contain duplicates.
  *
  */
-public class InnerJoin implements PlanNode {
+public class InnerJoin implements PlanNode, ParentProvider {
 
-	PlanNode left;
-	PlanNode right;
+	static private final Logger logger = LoggerFactory.getLogger(InnerJoin.class);
+	private boolean printed = false;
 
-	PushBasedPlanNode discardedLeft;
-	PushBasedPlanNode discardedRight;
+
+	private PlanNode left;
+	private PlanNode right;
+
+	private PushBasedPlanNode discardedLeft;
+	private PushBasedPlanNode discardedRight;
 
 	public InnerJoin(PlanNode left, PlanNode right, PushBasedPlanNode discardedLeft, PushBasedPlanNode discardedRight) {
 		this.left = left;
 		this.right = right;
 		this.discardedLeft = discardedLeft;
 		this.discardedRight = discardedRight;
-		if(discardedLeft instanceof SupportsDepthProvider){
-			((SupportsDepthProvider) discardedLeft).receiveDepthProvider(new DepthProvider() {
-				@Override
-				public int depth() {
-					return Math.max(left.depth(), right.depth())+1;
-				}
-			});
+		if(discardedLeft instanceof SupportsParentProvider){
+			((SupportsParentProvider) discardedLeft).receiveParentProvider(this);
 		}
-		if(discardedRight instanceof SupportsDepthProvider){
-			((SupportsDepthProvider) discardedRight).receiveDepthProvider(new DepthProvider() {
-				@Override
-				public int depth() {
-					return Math.max(left.depth(), right.depth())+1;
-				}
-			});
+		if(discardedRight instanceof SupportsParentProvider){
+			((SupportsParentProvider) discardedRight).receiveParentProvider(this);
 		}
 	}
 
 	@Override
+	public List<PlanNode> parent() {
+		return Arrays.asList(left, right);
+	}
+
+	@Override
 	public CloseableIteration<Tuple, SailException> iterator() {
+
+		InnerJoin that = this;
 		return new CloseableIteration<Tuple, SailException>() {
 
 
@@ -77,6 +87,9 @@ public class InnerJoin implements PlanNode {
 				if (nextLeft == null) {
 					if (discardedRight != null) {
 						while(nextRight != null){
+							if(LoggingNode.loggingEnabled){
+								logger.info(leadingSpace() + that.getClass().getSimpleName() + ";discardedRight: " + " " + nextRight.toString());
+							}
 							discardedRight.push(nextRight);
 							if(rightIterator.hasNext()){
 								nextRight = rightIterator.next();
@@ -102,6 +115,9 @@ public class InnerJoin implements PlanNode {
 
 							if (compareTo < 0) {
 								if (discardedLeft != null) {
+									if(LoggingNode.loggingEnabled){
+										logger.info(leadingSpace() + that.getClass().getSimpleName() + ";discardedLeft: " + " " + nextLeft.toString());
+									}
 									discardedLeft.push(nextLeft);
 								}
 								if (leftIterator.hasNext()) {
@@ -112,6 +128,9 @@ public class InnerJoin implements PlanNode {
 								}
 							} else {
 								if (discardedRight != null) {
+									if(LoggingNode.loggingEnabled){
+										logger.info(leadingSpace() + that.getClass().getSimpleName() + ";discardedRight: " + " " + nextRight.toString());
+									}
 									discardedRight.push(nextRight);
 								}
 								if (rightIterator.hasNext()) {
@@ -163,4 +182,51 @@ public class InnerJoin implements PlanNode {
 		return Math.max(left.depth(), right.depth());
 	}
 
+	@Override
+	public void getPlanAsGraphvizDot(StringBuilder stringBuilder) {
+		if(printed) return;
+		printed = true;
+		left.getPlanAsGraphvizDot(stringBuilder);
+
+		stringBuilder.append(getId() + " [label=\"" + StringEscapeUtils.escapeJava(this.toString()) + "\"];").append("\n");
+		stringBuilder.append(left.getId()+" -> "+getId()+ " [label=\"left\"];").append("\n");
+		stringBuilder.append(right.getId()+" -> "+getId()+ " [label=\"right\"];").append("\n");
+		right.getPlanAsGraphvizDot(stringBuilder);
+
+		if(discardedRight != null){
+			if(discardedRight instanceof PlanNode){
+				stringBuilder.append(getId()+" -> "+((PlanNode) discardedRight).getId()+ " [label=\"discardedRight\"];").append("\n");
+			}
+
+		}
+		if(discardedLeft != null){
+			if(discardedLeft instanceof PlanNode){
+				stringBuilder.append(getId()+" -> "+((PlanNode) discardedLeft).getId()+ " [label=\"discardedLeft\"];").append("\n");
+			}
+
+
+		}
+	}
+
+	@Override
+	public String getId() {
+		return System.identityHashCode(this)+"";
+	}
+
+	@Override
+	public IteratorData getIteratorDataType() {
+		if(left.getIteratorDataType() == right.getIteratorDataType()) return left.getIteratorDataType();
+
+		throw new IllegalStateException("Not implemented support for when left and right have different types of data");
+
+	}
+
+	@Override
+	public String toString() {
+		return "InnerJoin";
+	}
+
+	private String leadingSpace() {
+		return StringUtils.leftPad("", depth(), "    ");
+	}
 }

@@ -5,19 +5,20 @@
 	<parent>
 		<groupId>de.tudarmstadt.ukp.inception.rdf4j</groupId>
 		<artifactId>rdf4j-storage-parent</artifactId>
-		<version>2.4-SNAPSHOT</version>
+		<version>2.5-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>rdf4j-storage-compliance</artifactId>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>model</module>
-                <module>lucene</module>
-  <!-- Cannot be used with Lucene 7.3.x due to strict version dependency on 7.2.1 -->
-		<!--<module>elasticsearch</module>-->
-  <!-- Cannot be used with Lucene 7.3.x due to version dependency -->
-  <!--<module>solr</module>-->
+    <module>sail-model</module>
+    <module>sparql</module>
+    <module>lucene</module>
+    <!-- Cannot be used with Lucene 7.3.x due to strict version dependency on 7.2.1 -->
+    <!--<module>elasticsearch</module>-->
+    <!-- Cannot be used with Lucene 7.3.x due to version dependency -->
+    <!--<module>solr</module>-->
 		<module>store</module>
 		<module>serql</module>
 		<module>geosparql</module>
@@ -29,12 +30,6 @@
 	
 	<dependencyManagement>
 		<dependencies>		
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>rdf4j-http-compliance</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>rdf4j-rio-testsuite</artifactId>

@@ -28,11 +28,13 @@ import org.junit.Test;
 
 @ClusterScope(numDataNodes = 1)
 @SuppressLocalMode
+@Ignore("timeouts on JIPP due to ES cluster being spun up - see https://github.com/eclipse/rdf4j/issues/1196")
 public class ElasticsearchSailGeoSPARQLTest extends ESIntegTestCase {
 
 	AbstractLuceneSailGeoSPARQLTest delegateTest;
 
 	@Before
+	@Override
 	public void setUp()
 		throws Exception
 	{
@@ -67,6 +69,7 @@ public class ElasticsearchSailGeoSPARQLTest extends ESIntegTestCase {
 	}
 
 	@After
+	@Override
 	public void tearDown()
 		throws Exception
 	{

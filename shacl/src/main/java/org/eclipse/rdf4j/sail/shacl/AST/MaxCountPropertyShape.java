@@ -8,42 +8,40 @@
 
 package org.eclipse.rdf4j.sail.shacl.AST;
 
-import org.eclipse.rdf4j.common.iteration.Iterations;
-import org.eclipse.rdf4j.model.Literal;
+
 import org.eclipse.rdf4j.model.Resource;
-import org.eclipse.rdf4j.model.Statement;
-import org.eclipse.rdf4j.model.vocabulary.SHACL;
-import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.sail.SailRepositoryConnection;
 import org.eclipse.rdf4j.sail.shacl.ShaclSailConnection;
+import org.eclipse.rdf4j.sail.shacl.SourceConstraintComponent;
 import org.eclipse.rdf4j.sail.shacl.planNodes.BufferedTupleFromFilter;
 import org.eclipse.rdf4j.sail.shacl.planNodes.BulkedExternalLeftOuterJoin;
 import org.eclipse.rdf4j.sail.shacl.planNodes.DirectTupleFromFilter;
+import org.eclipse.rdf4j.sail.shacl.planNodes.EnrichWithShape;
 import org.eclipse.rdf4j.sail.shacl.planNodes.GroupByCount;
 import org.eclipse.rdf4j.sail.shacl.planNodes.LoggingNode;
 import org.eclipse.rdf4j.sail.shacl.planNodes.MaxCountFilter;
-import org.eclipse.rdf4j.sail.shacl.planNodes.UnionNode;
 import org.eclipse.rdf4j.sail.shacl.planNodes.PlanNode;
 import org.eclipse.rdf4j.sail.shacl.planNodes.TrimTuple;
+import org.eclipse.rdf4j.sail.shacl.planNodes.UnionNode;
 import org.eclipse.rdf4j.sail.shacl.planNodes.Unique;
-
-import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * The AST (Abstract Syntax Tree) node that represents a sh:maxCount property shape restriction.
+ * The AST (Abstract Syntax Tree) node that represents a sh:maxCount property nodeShape restriction.
  *
  * @author Håvard Ottestad
  */
 public class MaxCountPropertyShape extends PathPropertyShape {
 
+	private static final Logger logger = LoggerFactory.getLogger(MaxCountPropertyShape.class);
+
 	private long maxCount;
 
-	MaxCountPropertyShape(Resource id, SailRepositoryConnection connection, Shape shape) {
-		super(id, connection, shape);
+	MaxCountPropertyShape(Resource id, SailRepositoryConnection connection, NodeShape nodeShape, Long maxCount) {
+		super(id, connection, nodeShape);
 
-		try (Stream<Statement> stream = Iterations.stream(connection.getStatements(id, SHACL.MAX_COUNT, null, true))) {
-			maxCount = stream.map(Statement::getObject).map(v -> (Literal) v).map(Literal::longValue).findAny().orElseThrow(() -> new RuntimeException("Expected to find sh:maxCount on " + id));
-		}
+		this.maxCount = maxCount;
 
 	}
 
@@ -52,46 +50,69 @@ public class MaxCountPropertyShape extends PathPropertyShape {
 		return "MaxCountPropertyShape{" + "maxCount=" + maxCount + '}';
 	}
 
-	public PlanNode getPlan(ShaclSailConnection shaclSailConnection, Shape shape) {
+	@Override
+	public PlanNode getPlan(ShaclSailConnection shaclSailConnection, NodeShape nodeShape, boolean printPlans, PlanNode overrideTargetNode) {
 
+		if(overrideTargetNode != null){
+			PlanNode bulkedExternalLeftOuterJoin = new LoggingNode(new BulkedExternalLeftOuterJoin(overrideTargetNode, shaclSailConnection, path.getQuery("?a", "?c"), false), "");
+			PlanNode groupByCount = new LoggingNode(new GroupByCount(bulkedExternalLeftOuterJoin), "");
 
-		PlanNode planAddedStatements = new LoggingNode(shape.getPlanAddedStatements(shaclSailConnection, shape));
+			DirectTupleFromFilter directTupleFromFilter = new DirectTupleFromFilter();
 
-		PlanNode planAddedStatements1 = new LoggingNode(super.getPlanAddedStatements(shaclSailConnection, shape));
+			new MaxCountFilter(groupByCount, null, directTupleFromFilter, maxCount);
 
-		if (shape instanceof TargetClass) {
-			planAddedStatements1 = new LoggingNode(((TargetClass) shape).getTypeFilterPlan(shaclSailConnection, planAddedStatements1));
+			if(printPlans){
+				String planAsGraphvizDot = getPlanAsGraphvizDot(directTupleFromFilter, shaclSailConnection);
+				logger.info(planAsGraphvizDot);
+			}
+
+			return new EnrichWithShape(new LoggingNode(directTupleFromFilter, ""), this);
 		}
 
-		PlanNode mergeNode = new LoggingNode(new UnionNode(planAddedStatements, planAddedStatements1));
 
-		PlanNode groupByCount1 = new LoggingNode(new GroupByCount(mergeNode));
+		PlanNode planAddedStatements = new LoggingNode(nodeShape.getPlanAddedStatements(shaclSailConnection, nodeShape), "");
+
+		PlanNode planAddedStatements1 = new LoggingNode(super.getPlanAddedStatements(shaclSailConnection, nodeShape), "");
+
+
+		if (nodeShape instanceof TargetClass) {
+			planAddedStatements1 = new LoggingNode(((TargetClass) nodeShape).getTypeFilterPlan(shaclSailConnection, planAddedStatements1), "");
+		}
+
+		PlanNode mergeNode = new LoggingNode(new UnionNode(planAddedStatements, planAddedStatements1), "");
+
+		PlanNode groupByCount1 = new LoggingNode(new GroupByCount(mergeNode), "");
 
 		BufferedTupleFromFilter validValues = new BufferedTupleFromFilter();
 		BufferedTupleFromFilter invalidValues = new BufferedTupleFromFilter();
 
 		new MaxCountFilter(groupByCount1, validValues, invalidValues, maxCount);
 
-		PlanNode trimmed = new LoggingNode(new TrimTuple(validValues, 1));
+		PlanNode trimmed = new LoggingNode(new TrimTuple(validValues, 0, 1), "");
 
-		PlanNode unique = new LoggingNode(new Unique(trimmed));
+		PlanNode unique = new LoggingNode(new Unique(trimmed), "");
 
-		PlanNode bulkedExternalLeftOuterJoin = new LoggingNode(new BulkedExternalLeftOuterJoin(unique, shaclSailConnection, path.getQuery()));
+		PlanNode bulkedExternalLeftOuterJoin = new LoggingNode(new BulkedExternalLeftOuterJoin(unique, shaclSailConnection, path.getQuery("?a", "?c"), false), "");
 
-		PlanNode groupByCount = new LoggingNode(new GroupByCount(bulkedExternalLeftOuterJoin));
+		PlanNode groupByCount = new LoggingNode(new GroupByCount(bulkedExternalLeftOuterJoin), "");
 
 		DirectTupleFromFilter directTupleFromFilter = new DirectTupleFromFilter();
 
 		new MaxCountFilter(groupByCount, null, directTupleFromFilter, maxCount);
 
-		PlanNode mergeNode1 = new UnionNode(new LoggingNode(directTupleFromFilter), new LoggingNode(invalidValues));
+		PlanNode mergeNode1 = new UnionNode(new LoggingNode(directTupleFromFilter, ""), new LoggingNode(invalidValues, ""));
 
-		return new LoggingNode(mergeNode1);
+		if(printPlans){
+			String planAsGraphvizDot = getPlanAsGraphvizDot(mergeNode1, shaclSailConnection);
+			logger.info(planAsGraphvizDot);
+		}
+
+		return new EnrichWithShape(new LoggingNode(mergeNode1, ""), this);
 
 	}
 
 	@Override
-	public boolean requiresEvaluation(Repository addedStatements, Repository removedStatements) {
-		return true;
+	public SourceConstraintComponent getSourceConstraintComponent() {
+		return SourceConstraintComponent.MaxCountConstraintComponent;
 	}
 }
