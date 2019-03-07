@@ -222,11 +222,11 @@
 		<httpclient.version>4.5.6</httpclient.version>
 		<httpcore.version>4.4.10</httpcore.version>
 		<jackson.version>2.9.6</jackson.version>
-		<jsonldjava.version>0.12.1</jsonldjava.version>
+		<jsonldjava.version>0.12.3</jsonldjava.version>
 		<last.japicmp.compare.version>2.0</last.japicmp.compare.version>
     <rdf4j-core.version>2.5.0-inception-1-SNAPSHOT</rdf4j-core.version>
     <rdf4j-tools.version>2.5.0</rdf4j-tools.version>
-    <rdf4j-testsuite.version>2.4.6</rdf4j-testsuite.version>
+    <rdf4j-testsuite.version>2.5.0</rdf4j-testsuite.version>
 	</properties>
 
 	<dependencyManagement>
