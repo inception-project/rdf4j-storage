@@ -46,7 +46,7 @@ public class NativeStoreTxnTest {
 
 		File dataDir = tempFolder.newFolder("dbmodel");
 		repo = new SailRepository(new NativeStore(dataDir, "spoc,posc"));
-		repo.initialize();
+		repo.init();
 	}
 
 	@After
