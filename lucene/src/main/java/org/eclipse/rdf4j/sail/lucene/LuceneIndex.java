@@ -616,15 +616,15 @@ public class LuceneIndex extends AbstractLuceneIndex {
 				int count = 0;
 				for (int i = 0; i < reader.maxDoc(); i++) {
 					if (isDeleted(reader, i)) {
-                        continue;
-                    }
+						continue;
+					}
 					doc = readDocument(reader, i, null);
 					totalFields += doc.getFields().size();
 					count++;
 					idArray = doc.getValues("id");
 					for (String id : idArray) {
-                        ids.add(id);
-                    }
+						ids.add(id);
+					}
 
 				}
 
@@ -885,16 +885,15 @@ public class LuceneIndex extends AbstractLuceneIndex {
 	private QueryParser getQueryParser(IRI propertyURI) {
 		// check out which query parser to use, based on the given property URI
 		if (propertyURI == null) {
-            // if we have no property given, we create a default query parser
+			// if we have no property given, we create a default query parser
 			// which
 			// has the TEXT_FIELD_NAME as the default field
 			return new QueryParser(SearchFields.TEXT_FIELD_NAME, this.queryAnalyzer);
-        }
-        else {
-            // otherwise we create a query parser that has the given property as
+		} else {
+			// otherwise we create a query parser that has the given property as
 			// the default field
 			return new QueryParser(SearchFields.getPropertyField(propertyURI), this.queryAnalyzer);
-        }
+		}
 	}
 
 	/**
@@ -1001,8 +1000,8 @@ public class LuceneIndex extends AbstractLuceneIndex {
 		// the old IndexReaders/Searchers are not outdated
 		invalidateReaders();
 		if (indexWriter != null) {
-            indexWriter.close();
-        }
+			indexWriter.close();
+		}
 
 		// crate new writer
 		IndexWriterConfig indexWriterConfig = getIndexWriterConfig();
